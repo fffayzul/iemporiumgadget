@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-at05&c!x(16b3^aej008@x372ecn-**e$t)p@ly)l9g3h^=s#!')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
+ALLOWED_HOSTS = ['*']
 
 # ── Apps ──────────────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
