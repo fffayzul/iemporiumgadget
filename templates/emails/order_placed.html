@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; background: #0d0d1a; color: #e8e8e8; margin: 0; padding: 0; }
+    .wrapper { max-width: 600px; margin: 0 auto; padding: 30px 20px; }
+    .header { text-align: center; padding: 30px 0 20px; border-bottom: 2px solid #f0a500; }
+    .header h1 { color: #f0a500; margin: 0; font-size: 26px; letter-spacing: 1px; }
+    .header p { color: #888; margin: 6px 0 0; font-size: 13px; }
+    .card { background: #1a1a2e; border-radius: 8px; padding: 24px; margin: 24px 0; }
+    .card h2 { color: #f0a500; margin: 0 0 16px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; color: #888; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #2a2a3e; text-transform: uppercase; }
+    td { padding: 10px 0; border-bottom: 1px solid #2a2a3e; font-size: 14px; color: #e8e8e8; }
+    .total-row td { font-weight: bold; color: #f0a500; border-bottom: none; font-size: 16px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .info-item label { display: block; color: #888; font-size: 11px; text-transform: uppercase; margin-bottom: 3px; }
+    .info-item span { font-size: 14px; }
+    .footer { text-align: center; padding: 24px 0; color: #666; font-size: 12px; border-top: 1px solid #2a2a3e; margin-top: 24px; }
+    .footer a { color: #f0a500; text-decoration: none; }
+    .badge { display: inline-block; background: #f0a500; color: #000; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>iEmporium Gadgets</h1>
+      <p>Nigeria's Premier Gadget Destination</p>
+    </div>
+
+    <div class="card">
+      <h2>✅ Order Received!</h2>
+      <p>Hi <strong>{{ order.full_name }}</strong>, thank you for your order! We've received it and will confirm it shortly.</p>
+      <p>Order Number: <strong style="color:#f0a500;">{{ order.order_number }}</strong></p>
+    </div>
+
+    <div class="card">
+      <h2>📦 Order Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th style="text-align:right">Qty</th>
+            <th style="text-align:right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item.product_name }}</td>
+            <td style="text-align:right">{{ item.quantity }}</td>
+            <td style="text-align:right">₦{{ item.line_total|floatformat:0 }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="2" style="text-align:right;color:#888;">Subtotal</td>
+            <td style="text-align:right">₦{{ order.subtotal|floatformat:0 }}</td>
+          </tr>
+          {% if order.delivery_fee %}
+          <tr>
+            <td colspan="2" style="text-align:right;color:#888;">Delivery</td>
+            <td style="text-align:right">₦{{ order.delivery_fee|floatformat:0 }}</td>
+          </tr>
+          {% endif %}
+          <tr class="total-row">
+            <td colspan="2" style="text-align:right;">Total</td>
+            <td style="text-align:right">₦{{ order.total|floatformat:0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>🚚 Delivery Details</h2>
+      <div class="info-grid">
+        <div class="info-item"><label>Name</label><span>{{ order.full_name }}</span></div>
+        <div class="info-item"><label>Phone</label><span>{{ order.phone }}</span></div>
+        <div class="info-item"><label>Address</label><span>{{ order.address }}</span></div>
+        <div class="info-item"><label>City / State</label><span>{{ order.city }}, {{ order.state }}</span></div>
+        <div class="info-item"><label>Payment</label><span>{{ order.get_payment_method_display }}</span></div>
+      </div>
+      {% if order.payment_method == 'bank' %}
+      <div style="background:#0d0d1a;border-left:3px solid #f0a500;padding:12px 16px;margin-top:16px;border-radius:0 4px 4px 0;">
+        <p style="margin:0;font-weight:bold;color:#f0a500;">Bank Transfer Details</p>
+        <p style="margin:8px 0 0;font-size:13px;color:#ccc;">Please transfer <strong>₦{{ order.total|floatformat:0 }}</strong> to:<br>
+        Bank: <strong>Bank Name</strong><br>
+        Account: <strong>0000000000</strong><br>
+        Name: <strong>iEmporium Gadgets</strong><br>
+        Use <strong>{{ order.order_number }}</strong> as reference.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="footer">
+      <p>Questions? Reach us on Instagram: <a href="https://www.instagram.com/iemporiumgadget">@iemporiumgadget</a></p>
+      <p style="margin-top:8px;">© iEmporium Gadgets · Nigeria</p>
+    </div>
+  </div>
+</body>
+</html>

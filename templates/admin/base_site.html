@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block branding %}
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}" style="color:#f0a500;">
+    iEmporium Gadgets Admin
+  </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}
+<div id="nav-global" style="padding:6px 16px;background:#1a1a2e;border-bottom:1px solid #2a2a3e;">
+  <a href="/admin/dashboard/" style="color:#f0a500;font-weight:bold;text-decoration:none;font-size:14px;">
+    📊 Statistics Dashboard
+  </a>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="/" target="_blank" style="color:#aaa;text-decoration:none;font-size:14px;">
+    🌐 View Website
+  </a>
+</div>
+{% endblock %}

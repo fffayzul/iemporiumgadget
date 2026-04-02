@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; background: #0d0d1a; color: #e8e8e8; margin: 0; padding: 0; }
+    .wrapper { max-width: 600px; margin: 0 auto; padding: 30px 20px; }
+    .header { text-align: center; padding: 30px 0 20px; border-bottom: 2px solid #f0a500; }
+    .header h1 { color: #f0a500; margin: 0; font-size: 26px; letter-spacing: 1px; }
+    .header p { color: #888; margin: 6px 0 0; font-size: 13px; }
+    .hero-banner { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 2px solid #f0a500; border-radius: 8px; padding: 28px; text-align: center; margin: 24px 0; }
+    .hero-banner .icon { font-size: 48px; }
+    .hero-banner h2 { color: #f0a500; margin: 12px 0 8px; font-size: 22px; }
+    .hero-banner p { color: #ccc; margin: 0; }
+    .card { background: #1a1a2e; border-radius: 8px; padding: 24px; margin: 24px 0; }
+    .card h2 { color: #f0a500; margin: 0 0 16px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; color: #888; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #2a2a3e; text-transform: uppercase; }
+    td { padding: 10px 0; border-bottom: 1px solid #2a2a3e; font-size: 14px; }
+    .total-row td { font-weight: bold; color: #f0a500; border-bottom: none; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .info-item label { display: block; color: #888; font-size: 11px; text-transform: uppercase; margin-bottom: 3px; }
+    .info-item span { font-size: 14px; }
+    .footer { text-align: center; padding: 24px 0; color: #666; font-size: 12px; border-top: 1px solid #2a2a3e; margin-top: 24px; }
+    .footer a { color: #f0a500; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>iEmporium Gadgets</h1>
+      <p>Nigeria's Premier Gadget Destination</p>
+    </div>
+
+    <div class="hero-banner">
+      <div class="icon">🚚</div>
+      <h2>Your Order Is On Its Way!</h2>
+      <p>We've handed your package to our dispatch partner. Expect delivery soon!</p>
+    </div>
+
+    <div class="card">
+      <h2>📋 Order Details</h2>
+      <p style="margin:0 0 16px;">Order Number: <strong style="color:#f0a500;">{{ order.order_number }}</strong></p>
+
+      <div style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="background:#28a745;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;">✓ Received</span>
+          <span style="color:#f0a500">→</span>
+          <span style="background:#28a745;color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;">✓ Confirmed</span>
+          <span style="color:#f0a500">→</span>
+          <span style="background:#f0a500;color:#000;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold;">✓ Dispatched</span>
+          <span style="color:#666">→</span>
+          <span style="background:#2a2a3e;color:#888;padding:4px 10px;border-radius:12px;font-size:12px;">Delivered</span>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>Product</th><th style="text-align:right">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item.product_name }}</td>
+            <td style="text-align:right">{{ item.quantity }}</td>
+            <td style="text-align:right">₦{{ item.product_price|floatformat:0 }}</td>
+            <td style="text-align:right">₦{{ item.line_total|floatformat:0 }}</td>
+          </tr>
+          {% endfor %}
+          {% if order.delivery_fee %}
+          <tr>
+            <td colspan="3" style="text-align:right;color:#888;">Delivery Fee</td>
+            <td style="text-align:right">₦{{ order.delivery_fee|floatformat:0 }}</td>
+          </tr>
+          {% endif %}
+          <tr class="total-row">
+            <td colspan="3" style="text-align:right;">Grand Total</td>
+            <td style="text-align:right">₦{{ order.total|floatformat:0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>🏠 Delivery Address</h2>
+      <div class="info-grid">
+        <div class="info-item"><label>Name</label><span>{{ order.full_name }}</span></div>
+        <div class="info-item"><label>Phone</label><span>{{ order.phone }}</span></div>
+        <div class="info-item"><label>Address</label><span>{{ order.address }}</span></div>
+        <div class="info-item"><label>City / State</label><span>{{ order.city }}, {{ order.state }}</span></div>
+        <div class="info-item"><label>Payment</label><span>{{ order.get_payment_method_display }}</span></div>
+      </div>
+    </div>
+
+    <div style="background:#1a1a2e;border-radius:8px;padding:20px;text-align:center;margin:24px 0;">
+      <p style="color:#888;font-size:13px;margin:0;">Have questions about your delivery? Contact us on Instagram:</p>
+      <a href="https://www.instagram.com/iemporiumgadget" style="color:#f0a500;font-weight:bold;font-size:15px;text-decoration:none;">@iemporiumgadget</a>
+    </div>
+
+    <div class="footer">
+      <p>© iEmporium Gadgets · Nigeria</p>
+    </div>
+  </div>
+</body>
+</html>
