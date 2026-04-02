@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}iEmporium Gadgets — Nigeria's Premier Gadget Store{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="ig-hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="hero-badge"><i class="bi bi-lightning-fill me-1"></i>Nigeria's #1 Gadget Store</div>
+        <h1>
+          The <span class="gold-text">Latest Tech</span><br>
+          Delivered to<br>
+          Your Doorstep
+        </h1>
+        <p class="lead mt-3">Phones, laptops, drones, gaming kits and more. Genuine products. Fast delivery across Nigeria.</p>
+        <div class="mt-4 d-flex gap-3 flex-wrap">
+          <a href="{% url 'store:product_list' %}" class="btn btn-gold btn-lg px-4">
+            <i class="bi bi-bag-fill me-2"></i>Shop Now
+          </a>
+          <a href="#categories" class="btn btn-outline-gold btn-lg px-4">Browse Categories</a>
+        </div>
+        <div class="mt-4 d-flex gap-4 flex-wrap">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-shield-check text-gold fs-5"></i>
+            <span class="text-muted small">Genuine Products</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-truck text-gold fs-5"></i>
+            <span class="text-muted small">Fast Delivery</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-headset text-gold fs-5"></i>
+            <span class="text-muted small">Customer Support</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+        <div style="position:relative;">
+          <div style="width:420px;height:420px;background:radial-gradient(circle,rgba(240,165,0,0.12) 0%,transparent 70%);display:flex;align-items:center;justify-content:center;">
+            <i class="bi bi-phone" style="font-size:9rem;color:rgba(240,165,0,0.2);"></i>
+            <i class="bi bi-laptop" style="font-size:6rem;color:rgba(240,165,0,0.15);position:absolute;bottom:60px;right:40px;"></i>
+            <i class="bi bi-controller" style="font-size:5rem;color:rgba(240,165,0,0.15);position:absolute;top:70px;right:60px;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section id="categories" class="py-5 section-bg">
+  <div class="container">
+    <div class="section-header">
+      <h2>Shop by Category</h2>
+      <div class="gold-line"></div>
+      <p>Find exactly what you're looking for</p>
+    </div>
+    <div class="row g-3">
+      {% for cat in categories %}
+      <div class="col-6 col-md-4 col-lg-2">
+        <a href="{% url 'store:category_detail' cat.slug %}" class="category-card text-decoration-none">
+          <span class="cat-icon">
+            {% if "phone" in cat.name|lower %}📱
+            {% elif "laptop" in cat.name|lower %}💻
+            {% elif "drone" in cat.name|lower %}🚁
+            {% elif "content" in cat.name|lower %}🎥
+            {% elif "gaming" in cat.name|lower %}🎮
+            {% elif "accessor" in cat.name|lower %}🎧
+            {% else %}🔌
+            {% endif %}
+          </span>
+          <h6>{{ cat.name }}</h6>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+{% if featured_products %}
+<section class="py-5">
+  <div class="container">
+    <div class="section-header">
+      <h2>Featured Products</h2>
+      <div class="gold-line"></div>
+      <p>Handpicked top picks just for you</p>
+    </div>
+    <div class="row g-4">
+      {% for product in featured_products %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="card-img-wrap">
+            {% with product.primary_image as img %}
+              {% if img %}
+                <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}">
+              {% else %}
+                <div class="no-image-placeholder w-100 h-100"><i class="bi bi-image"></i></div>
+              {% endif %}
+            {% endwith %}
+          </div>
+          <div class="card-body">
+            {% if product.brand %}<span class="text-muted" style="font-size:12px;">{{ product.brand.name }}</span>{% endif %}
+            <h5 class="card-title mt-1">{{ product.name }}</h5>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="condition-badge-{{ product.condition }}">{{ product.get_condition_display }}</span>
+              {% if product.discount_pct %}
+              <span class="badge bg-danger" style="font-size:11px;">-{{ product.discount_pct }}%</span>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <span class="product-price">₦{{ product.price|floatformat:0|intcomma }}</span>
+              {% if product.compare_at_price %}
+              <span class="product-compare">₦{{ product.compare_at_price|floatformat:0|intcomma }}</span>
+              {% endif %}
+            </div>
+            <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-gold w-100 btn-sm">
+              View Product
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'store:product_list' %}" class="btn btn-outline-gold btn-lg px-5">
+        View All Products <i class="bi bi-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- WHY BUY FROM US -->
+<section class="py-5 section-bg">
+  <div class="container">
+    <div class="section-header">
+      <h2>Why Choose iEmporium?</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-item card-dark h-100">
+          <span class="feature-icon"><i class="bi bi-shield-fill-check"></i></span>
+          <h5>100% Genuine Products</h5>
+          <p>Every product we sell is authentic and sourced from trusted suppliers. No fakes, no replicas.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-item card-dark h-100">
+          <span class="feature-icon"><i class="bi bi-truck"></i></span>
+          <h5>Fast Nigeria-Wide Delivery</h5>
+          <p>We deliver to all 36 states and FCT. Your gadgets arrive fast and securely packaged.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-item card-dark h-100">
+          <span class="feature-icon"><i class="bi bi-instagram"></i></span>
+          <h5>Trusted Since Day One</h5>
+          <p>Find us on Instagram <a href="https://www.instagram.com/iemporiumgadget" target="_blank" class="text-gold">@iemporiumgadget</a> — real reviews from real customers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND STORY -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="hero-badge">Our Story</div>
+        <h2 class="fw-bold mt-2" style="font-size:2rem;">
+          Nigeria's Go-To<br><span class="text-gold">Gadget Destination</span>
+        </h2>
+        <p class="text-muted mt-3" style="line-height:1.8;">
+          iEmporium Gadgets was founded with a simple mission: give every Nigerian access to premium electronics at fair prices. From the latest flagship phones to professional-grade drone cameras, we bring you the tech that powers your work and play.
+        </p>
+        <p class="text-muted" style="line-height:1.8;">
+          Based in Nigeria, we ship nationwide — because great technology shouldn't be limited by your location.
+        </p>
+        <a href="https://www.instagram.com/iemporiumgadget" target="_blank" class="btn btn-outline-gold mt-2">
+          <i class="bi bi-instagram me-2"></i>Follow Us on Instagram
+        </a>
+      </div>
+      <div class="col-lg-6">
+        <div class="card-dark p-4 text-center" style="border-radius:16px;">
+          <div class="row g-3">
+            <div class="col-6">
+              <div style="background:#12122a;border-radius:10px;padding:20px;">
+                <div class="text-gold fw-bold" style="font-size:2rem;">6+</div>
+                <div class="text-muted small">Product Categories</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div style="background:#12122a;border-radius:10px;padding:20px;">
+                <div class="text-gold fw-bold" style="font-size:2rem;">🇳🇬</div>
+                <div class="text-muted small">Nigeria-Wide Delivery</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div style="background:#12122a;border-radius:10px;padding:20px;">
+                <div class="text-gold fw-bold" style="font-size:2rem;">✓</div>
+                <div class="text-muted small">Verified Genuine Products</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div style="background:#12122a;border-radius:10px;padding:20px;">
+                <div class="text-gold fw-bold" style="font-size:2rem;">₦</div>
+                <div class="text-muted small">Naira Pricing, No Surprises</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

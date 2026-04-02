@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Checkout — iEmporium Gadgets{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-bold mb-4"><i class="bi bi-bag-check text-gold me-2"></i>Checkout</h2>
+
+  <form method="post" action="{% url 'store:place_order' %}" class="checkout-form">
+    {% csrf_token %}
+    <div class="row g-4">
+
+      <!-- Delivery Info -->
+      <div class="col-lg-7">
+        <div class="card-dark p-4">
+          <h5 class="text-gold mb-4"><i class="bi bi-geo-alt me-2"></i>Delivery Information</h5>
+
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Full Name <span class="text-danger">*</span></label>
+              <input type="text" name="full_name" class="form-control" placeholder="Enter your full name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+              <input type="tel" name="phone" class="form-control" placeholder="e.g. 08012345678" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email Address <span class="text-muted">(Optional — for order updates)</span></label>
+              <input type="email" name="email" class="form-control" placeholder="your@email.com">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Delivery Address <span class="text-danger">*</span></label>
+              <textarea name="address" class="form-control" rows="2" placeholder="House number, street name, landmark..." required></textarea>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">City <span class="text-danger">*</span></label>
+              <input type="text" name="city" class="form-control" placeholder="Your city" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">State <span class="text-danger">*</span></label>
+              <select name="state" class="form-select" required>
+                <option value="">-- Select State --</option>
+                {% for value, label in nigerian_states %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Order Notes <span class="text-muted">(Optional)</span></label>
+              <textarea name="notes" class="form-control" rows="2" placeholder="Any special instructions for your order..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="card-dark p-4 mt-4">
+          <h5 class="text-gold mb-4"><i class="bi bi-credit-card me-2"></i>Payment Method</h5>
+          <div class="payment-radio">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="payment_method" value="cod" id="pay-cod" checked>
+              <label class="form-check-label" for="pay-cod">
+                <i class="bi bi-cash-coin me-2 text-gold"></i>
+                <strong>Cash on Delivery</strong>
+                <div class="text-muted small mt-1">Pay when your order arrives at your doorstep.</div>
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="payment_method" value="bank" id="pay-bank">
+              <label class="form-check-label" for="pay-bank">
+                <i class="bi bi-bank me-2 text-gold"></i>
+                <strong>Bank Transfer</strong>
+                <div class="text-muted small mt-1">Transfer to our bank account before delivery.</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Bank Details (shown when bank is selected) -->
+          <div class="bank-details-box mt-3" id="bank-details-box">
+            <p class="text-gold fw-bold mb-2">Bank Transfer Details</p>
+            <p class="text-muted small mb-1">Transfer the total amount to:</p>
+            <table class="table table-sm mb-0" style="color:#ccc;">
+              <tr><td class="text-muted pe-3">Bank:</td><td><strong>Bank Name</strong></td></tr>
+              <tr><td class="text-muted pe-3">Account No:</td><td><strong>0000000000</strong></td></tr>
+              <tr><td class="text-muted pe-3">Account Name:</td><td><strong>iEmporium Gadgets</strong></td></tr>
+            </table>
+            <p class="text-muted small mt-2 mb-0">Use your phone number as payment reference. Send proof of payment to our Instagram DM.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="col-lg-5">
+        <div class="order-summary-box">
+          <h5><i class="bi bi-receipt me-2"></i>Order Summary</h5>
+          <hr style="border-color:#2a2a3e;">
+          {% for item in cart_items %}
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div style="flex:1;padding-right:12px;">
+              <div class="fw-semibold" style="font-size:14px;">{{ item.name }}</div>
+              <div class="text-muted" style="font-size:12px;">₦{{ item.price|floatformat:0|intcomma }} × {{ item.quantity }}</div>
+            </div>
+            <div class="fw-bold" style="font-size:14px;white-space:nowrap;">₦{{ item.line_total|floatformat:0|intcomma }}</div>
+          </div>
+          {% endfor %}
+          <hr style="border-color:#2a2a3e;">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Subtotal</span>
+            <span>₦{{ subtotal|floatformat:0|intcomma }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-muted">Delivery Fee</span>
+            <span class="text-muted small">To be confirmed</span>
+          </div>
+          <hr style="border-color:#2a2a3e;">
+          <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold fs-5">Total</span>
+            <span class="fw-bold fs-5 text-gold">₦{{ subtotal|floatformat:0|intcomma }}</span>
+          </div>
+
+          <button type="submit" class="btn btn-gold w-100 btn-lg">
+            <i class="bi bi-bag-check me-2"></i>Place Order
+          </button>
+          <div class="mt-3 text-center">
+            <span class="text-muted small">
+              <i class="bi bi-shield-check text-gold me-1"></i>
+              Your order details are safe with us
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+{% endblock %}

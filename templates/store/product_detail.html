@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ product.name }} — iEmporium Gadgets{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'store:category_detail' product.category.slug %}">{{ product.category.name }}</a></li>
+      <li class="breadcrumb-item active">{{ product.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-5">
+
+    <!-- LEFT: Image Gallery -->
+    <div class="col-md-6">
+      <div class="product-gallery-main">
+        {% with images.first as first_img %}
+          {% if first_img %}
+          <img src="{{ first_img.image.url }}" alt="{{ first_img.alt_text|default:product.name }}" id="main-product-img">
+          {% else %}
+          <div class="no-image-placeholder w-100" style="height:400px;">
+            <i class="bi bi-image" style="font-size:4rem;"></i>
+          </div>
+          {% endif %}
+        {% endwith %}
+      </div>
+      {% if images.count > 1 %}
+      <div class="thumbnail-strip mt-2">
+        {% for img in images %}
+        <div class="thumb {% if forloop.first %}active{% endif %}" data-full="{{ img.image.url }}" data-alt="{{ img.alt_text }}">
+          <img src="{{ img.image.url }}" alt="{{ img.alt_text }}">
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- RIGHT: Info -->
+    <div class="col-md-6">
+      {% if product.brand %}
+      <p class="text-muted mb-1" style="font-size:13px;">{{ product.brand.name }}</p>
+      {% endif %}
+      <h1 class="fw-bold mb-2" style="font-size:1.8rem;">{{ product.name }}</h1>
+
+      <!-- Condition & Discount badges -->
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="condition-badge-{{ product.condition }}">{{ product.get_condition_display }}</span>
+        {% if product.discount_pct %}
+        <span class="discount-badge">-{{ product.discount_pct }}% OFF</span>
+        {% endif %}
+      </div>
+
+      <!-- Price -->
+      <div class="price-block mb-3">
+        <span class="main-price">₦{{ product.price|floatformat:0|intcomma }}</span>
+        {% if product.compare_at_price %}
+        <span class="was-price">₦{{ product.compare_at_price|floatformat:0|intcomma }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Stock -->
+      <div class="mb-3">
+        {% if product.stock == 0 %}
+          <span class="stock-badge-out"><i class="bi bi-x-circle me-1"></i>Out of Stock</span>
+        {% elif product.is_low_stock %}
+          <span class="stock-badge-low"><i class="bi bi-exclamation-circle me-1"></i>Low Stock — Only {{ product.stock }} left</span>
+        {% else %}
+          <span class="stock-badge-in"><i class="bi bi-check-circle me-1"></i>In Stock</span>
+        {% endif %}
+      </div>
+
+      <!-- Add to Cart Form -->
+      {% if product.is_in_stock %}
+      <form method="post" action="{% url 'store:cart_add' product.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="qty-control">
+            <button type="button" class="btn qty-minus">−</button>
+            <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control">
+            <button type="button" class="btn qty-plus">+</button>
+          </div>
+          <button type="submit" class="btn btn-gold px-4 flex-grow-1">
+            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+          </button>
+        </div>
+      </form>
+      {% else %}
+      <button class="btn btn-secondary w-100 mb-3" disabled>Out of Stock</button>
+      {% endif %}
+
+      <a href="{% url 'store:product_list' %}" class="btn btn-outline-secondary w-100" style="border-color:#2a2a3e;color:#888;">
+        <i class="bi bi-arrow-left me-2"></i>Continue Shopping
+      </a>
+
+      <!-- Trust badges -->
+      <div class="mt-4 d-flex gap-3 flex-wrap">
+        <div class="d-flex align-items-center gap-1 text-muted small">
+          <i class="bi bi-shield-check text-gold"></i> Genuine Product
+        </div>
+        <div class="d-flex align-items-center gap-1 text-muted small">
+          <i class="bi bi-truck text-gold"></i> Nationwide Delivery
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs: Description & Specs -->
+  <div class="mt-5">
+    <ul class="nav ig-tabs" id="productTabs">
+      <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#desc">Description</button>
+      </li>
+      {% if product.specifications %}
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#specs">Specifications</button>
+      </li>
+      {% endif %}
+    </ul>
+    <div class="tab-content tab-content-dark">
+      <div class="tab-pane fade show active" id="desc">
+        <p style="line-height:1.9;color:#ccc;">{{ product.description|linebreaks }}</p>
+      </div>
+      {% if product.specifications %}
+      <div class="tab-pane fade" id="specs">
+        <pre style="color:#ccc;font-family:inherit;white-space:pre-wrap;margin:0;">{{ product.specifications }}</pre>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  {% if related_products %}
+  <div class="mt-5">
+    <h4 class="fw-bold mb-4">You Might Also Like</h4>
+    <div class="row g-4">
+      {% for rp in related_products %}
+      <div class="col-6 col-md-3">
+        <div class="product-card">
+          <a href="{% url 'store:product_detail' rp.slug %}">
+            <div class="card-img-wrap">
+              {% with rp.primary_image as img %}
+                {% if img %}
+                  <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:rp.name }}">
+                {% else %}
+                  <div class="no-image-placeholder w-100 h-100"><i class="bi bi-image"></i></div>
+                {% endif %}
+              {% endwith %}
+            </div>
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{% url 'store:product_detail' rp.slug %}" class="text-light text-decoration-none">{{ rp.name }}</a>
+            </h5>
+            <span class="product-price">₦{{ rp.price|floatformat:0|intcomma }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

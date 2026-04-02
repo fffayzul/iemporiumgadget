@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Order Confirmed — {{ order.order_number }} | iEmporium Gadgets{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- Success Banner -->
+      <div class="text-center mb-5">
+        <div class="confirm-icon">✓</div>
+        <h2 class="fw-bold">Order Placed Successfully!</h2>
+        <p class="text-muted fs-5">Thank you, <strong>{{ order.full_name }}</strong>!</p>
+        <div class="card-dark d-inline-block px-4 py-2 mt-2">
+          <span class="text-muted small">Order Number:</span>
+          <span class="text-gold fw-bold fs-5 ms-2">{{ order.order_number }}</span>
+        </div>
+        {% if order.email %}
+        <p class="text-muted small mt-2">A confirmation email has been sent to <strong>{{ order.email }}</strong></p>
+        {% endif %}
+      </div>
+
+      <!-- Order Timeline -->
+      <div class="card-dark p-4 mb-4">
+        <h6 class="text-muted text-uppercase mb-3" style="font-size:12px;letter-spacing:1px;">What Happens Next</h6>
+        <div class="order-timeline">
+          <div class="timeline-step active">
+            <div class="ts-circle">📋</div>
+            <div class="ts-label">Order<br>Received</div>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <div class="ts-circle">✅</div>
+            <div class="ts-label">We<br>Confirm</div>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <div class="ts-circle">🚚</div>
+            <div class="ts-label">Dispatched</div>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-step">
+            <div class="ts-circle">📦</div>
+            <div class="ts-label">Delivered</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="card-dark p-4 mb-4">
+        <h5 class="text-gold mb-3"><i class="bi bi-bag me-2"></i>Your Items</h5>
+        <table class="table ig-table mb-0">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="text-center">Qty</th>
+              <th class="text-end">Price</th>
+              <th class="text-end">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+            <tr>
+              <td>{{ item.product_name }}</td>
+              <td class="text-center">{{ item.quantity }}</td>
+              <td class="text-end">₦{{ item.product_price|floatformat:0|intcomma }}</td>
+              <td class="text-end fw-bold">₦{{ item.line_total|floatformat:0|intcomma }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-end text-muted">Subtotal</td>
+              <td class="text-end">₦{{ order.subtotal|floatformat:0|intcomma }}</td>
+            </tr>
+            {% if order.delivery_fee %}
+            <tr>
+              <td colspan="3" class="text-end text-muted">Delivery</td>
+              <td class="text-end">₦{{ order.delivery_fee|floatformat:0|intcomma }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <td colspan="3" class="text-end fw-bold fs-5">Total</td>
+              <td class="text-end fw-bold fs-5 text-gold">₦{{ order.total|floatformat:0|intcomma }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Delivery Details -->
+      <div class="card-dark p-4 mb-4">
+        <h5 class="text-gold mb-3"><i class="bi bi-geo-alt me-2"></i>Delivery Details</h5>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="text-muted small text-uppercase d-block">Name</label>
+            <span>{{ order.full_name }}</span>
+          </div>
+          <div class="col-sm-6">
+            <label class="text-muted small text-uppercase d-block">Phone</label>
+            <span>{{ order.phone }}</span>
+          </div>
+          <div class="col-12">
+            <label class="text-muted small text-uppercase d-block">Address</label>
+            <span>{{ order.address }}, {{ order.city }}, {{ order.state }}</span>
+          </div>
+          <div class="col-sm-6">
+            <label class="text-muted small text-uppercase d-block">Payment Method</label>
+            <span>{{ order.get_payment_method_display }}</span>
+          </div>
+        </div>
+
+        {% if order.payment_method == 'bank' %}
+        <div class="bank-details-box mt-4" style="display:block;">
+          <p class="text-gold fw-bold mb-2">Bank Transfer Instructions</p>
+          <p class="text-muted small mb-1">Please transfer <strong class="text-white">₦{{ order.total|floatformat:0|intcomma }}</strong> to:</p>
+          <table class="table table-sm mb-1" style="color:#ccc;">
+            <tr><td class="text-muted pe-3">Bank:</td><td><strong>Bank Name</strong></td></tr>
+            <tr><td class="text-muted pe-3">Account No:</td><td><strong>0000000000</strong></td></tr>
+            <tr><td class="text-muted pe-3">Account Name:</td><td><strong>iEmporium Gadgets</strong></td></tr>
+            <tr><td class="text-muted pe-3">Reference:</td><td><strong class="text-gold">{{ order.order_number }}</strong></td></tr>
+          </table>
+          <p class="text-muted small mb-0">Send proof of payment via Instagram DM: <a href="https://www.instagram.com/iemporiumgadget" target="_blank" class="text-gold">@iemporiumgadget</a></p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center">
+        <a href="{% url 'store:product_list' %}" class="btn btn-gold btn-lg px-5">
+          <i class="bi bi-bag me-2"></i>Continue Shopping
+        </a>
+        <p class="text-muted small mt-3">
+          Questions? Contact us on Instagram:
+          <a href="https://www.instagram.com/iemporiumgadget" target="_blank" class="text-gold">@iemporiumgadget</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
