@@ -95,7 +95,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # WhiteNoise compressed static files
 STORAGES = {
     'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
     },
     'default': {
         'BACKEND': 'django.core.files.storage.FileSystemStorage',
@@ -128,3 +128,10 @@ CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
     default='http://localhost:8000'
 ).split(',')
+
+# ── Production HTTPS security (only when DEBUG=False) ─────────────────────────
+if not DEBUG:
+    # Railway terminates SSL at the load balancer — do NOT redirect here
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
