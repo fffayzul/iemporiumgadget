@@ -6,7 +6,7 @@
   {% if original %}
     <div class="submit-row" style="margin-top:10px;">
       <a href="{% url 'admin:order_send_dispatch' original.pk %}"
-         style="background:#f0a500;color:#000;padding:10px 20px;border-radius:4px;font-weight:bold;text-decoration:none;display:inline-block;"
+         style="background:#2563eb;color:#fff;padding:10px 20px;border-radius:4px;font-weight:bold;text-decoration:none;display:inline-block;"
          onclick="return confirm('Send dispatch notification email to {{ original.full_name }}?')">
         📦 Send Dispatch Notification
       </a>

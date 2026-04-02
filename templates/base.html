@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}iEmporium Gadgets — Nigeria's Premier Gadget Store{% endblock %}</title>
+  <title>{% block title %}iEmporium Gadgets — Innovate. Empower. Explore.{% endblock %}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
@@ -13,15 +13,51 @@
 </head>
 <body>
 
+<!-- TOP BAR -->
+<div style="background:#0b1f4a;border-bottom:1px solid #1a3a8a;padding:5px 0;font-size:12px;">
+  <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-3">
+      <a href="tel:+2348100050716" style="color:#94a3b8;text-decoration:none;">
+        <i class="bi bi-telephone-fill me-1" style="color:#60a5fa;"></i>+234 810 005 0716
+      </a>
+      <span style="color:#2d4a80;">|</span>
+      <span style="color:#94a3b8;">
+        <i class="bi bi-geo-alt-fill me-1" style="color:#60a5fa;"></i>6/8 Kodesho St, Ikeja Computer Village, Lagos
+      </span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <a href="https://www.instagram.com/iemporiumgadget" target="_blank" style="color:#94a3b8;" title="Instagram"><i class="bi bi-instagram"></i></a>
+      <a href="https://www.tiktok.com/@iemporiumgadget" target="_blank" style="color:#94a3b8;" title="TikTok"><i class="bi bi-tiktok"></i></a>
+      <a href="https://www.facebook.com/iemporiumgadget" target="_blank" style="color:#94a3b8;" title="Facebook"><i class="bi bi-facebook"></i></a>
+    </div>
+  </div>
+</div>
+
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark ig-navbar sticky-top">
   <div class="container">
-    <a class="navbar-brand ig-brand" href="{% url 'store:home' %}">
-      <span class="brand-ie">iE</span>mporium <span class="brand-gadgets">Gadgets</span>
+    <!-- Logo -->
+    <a class="navbar-brand ig-brand d-flex align-items-center gap-2" href="{% url 'store:home' %}">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="18" fill="#1a3a8a"/>
+        <path d="M18 8 L20 13 L25 13 L21 16.5 L23 22 L18 18.5 L13 22 L15 16.5 L11 13 L16 13 Z" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+        <circle cx="18" cy="18" r="5" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+        <circle cx="18" cy="18" r="2.5" fill="#60a5fa"/>
+        <!-- Gear teeth -->
+        <path d="M18 7v2M18 27v2M7 18h2M27 18h2M10.1 10.1l1.4 1.4M24.5 24.5l1.4 1.4M10.1 25.9l1.4-1.4M24.5 11.5l1.4-1.4" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div style="font-size:1.1rem;font-weight:800;line-height:1;">
+          <span class="brand-ie">iE</span><span style="color:#ffffff;">MPORIUM</span>
+        </div>
+        <div style="font-size:8px;color:#94a3b8;letter-spacing:1.5px;font-weight:600;">INNOVATE · EMPOWER · EXPLORE</div>
+      </div>
     </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -35,11 +71,7 @@
             <li><a class="dropdown-item" href="{% url 'store:product_list' %}">All Products</a></li>
             <li><hr class="dropdown-divider"></li>
             {% for cat in categories %}
-            <li>
-              <a class="dropdown-item" href="{% url 'store:category_detail' cat.slug %}">
-                {{ cat.name }}
-              </a>
-            </li>
+            <li><a class="dropdown-item" href="{% url 'store:category_detail' cat.slug %}">{{ cat.name }}</a></li>
             {% endfor %}
           </ul>
         </li>
@@ -57,7 +89,7 @@
       <a href="{% url 'store:cart_detail' %}" class="btn btn-outline-gold position-relative">
         <i class="bi bi-cart3"></i>
         {% if cart_count %}
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gold text-dark">
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           {{ cart_count }}
         </span>
         {% endif %}
@@ -85,41 +117,82 @@
 <footer class="ig-footer mt-5">
   <div class="container">
     <div class="row py-5">
+      <!-- Brand -->
       <div class="col-md-4 mb-4">
-        <h5 class="text-gold mb-3">iEmporium Gadgets</h5>
-        <p class="text-muted">Nigeria's go-to destination for premium electronics. Phones, laptops, drones, gaming kits and more — delivered to your doorstep.</p>
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="18" fill="#1a3a8a"/>
+            <circle cx="18" cy="18" r="5" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+            <circle cx="18" cy="18" r="2.5" fill="#60a5fa"/>
+            <path d="M18 7v2M18 27v2M7 18h2M27 18h2M10.1 10.1l1.4 1.4M24.5 24.5l1.4 1.4M10.1 25.9l1.4-1.4M24.5 11.5l1.4-1.4" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div style="font-size:1rem;font-weight:800;color:#ffffff;">iEMPORIUM GADGETS</div>
+            <div style="font-size:9px;color:#64748b;letter-spacing:1.5px;">INNOVATE · EMPOWER · EXPLORE</div>
+          </div>
+        </div>
+        <p style="color:#94a3b8;font-size:14px;line-height:1.7;">
+          Nigeria's go-to destination for premium electronics. Phones, laptops, drones, gaming kits and more — delivered to your doorstep nationwide.
+        </p>
+        <!-- Social -->
+        <div class="d-flex gap-3 mt-3">
+          <a href="https://www.instagram.com/iemporiumgadget" target="_blank" style="color:#60a5fa;font-size:1.3rem;" title="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="https://www.tiktok.com/@iemporiumgadget" target="_blank" style="color:#60a5fa;font-size:1.3rem;" title="TikTok"><i class="bi bi-tiktok"></i></a>
+          <a href="https://www.facebook.com/iemporiumgadget" target="_blank" style="color:#60a5fa;font-size:1.3rem;" title="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="https://wa.me/2348100050716" target="_blank" style="color:#60a5fa;font-size:1.3rem;" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        </div>
       </div>
+
+      <!-- Categories -->
       <div class="col-md-2 mb-4">
-        <h6 class="text-gold mb-3">Categories</h6>
+        <h6>Categories</h6>
         <ul class="list-unstyled footer-links">
           {% for cat in categories %}
           <li><a href="{% url 'store:category_detail' cat.slug %}">{{ cat.name }}</a></li>
           {% endfor %}
         </ul>
       </div>
-      <div class="col-md-3 mb-4">
-        <h6 class="text-gold mb-3">Quick Links</h6>
+
+      <!-- Quick Links -->
+      <div class="col-md-2 mb-4">
+        <h6>Quick Links</h6>
         <ul class="list-unstyled footer-links">
           <li><a href="{% url 'store:product_list' %}">All Products</a></li>
           <li><a href="{% url 'store:cart_detail' %}">My Cart</a></li>
           <li><a href="{% url 'store:checkout' %}">Checkout</a></li>
         </ul>
       </div>
-      <div class="col-md-3 mb-4">
-        <h6 class="text-gold mb-3">Contact Us</h6>
-        <p class="text-muted mb-2">
-          <i class="bi bi-instagram me-2 text-gold"></i>
-          <a href="https://www.instagram.com/iemporiumgadget" target="_blank" class="footer-link">@iemporiumgadget</a>
-        </p>
-        <p class="text-muted mb-2"><i class="bi bi-geo-alt me-2 text-gold"></i>Nigeria</p>
-        <div class="mt-3">
-          <span class="badge bg-dark border border-secondary me-1">Cash on Delivery</span>
-          <span class="badge bg-dark border border-secondary">Bank Transfer</span>
+
+      <!-- Contact -->
+      <div class="col-md-4 mb-4">
+        <h6>Contact Us</h6>
+        <ul class="list-unstyled" style="font-size:14px;">
+          <li class="mb-2">
+            <i class="bi bi-telephone-fill me-2" style="color:#60a5fa;"></i>
+            <a href="tel:+2348100050716" style="color:#94a3b8;">+234 810 005 0716</a>
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-whatsapp me-2" style="color:#60a5fa;"></i>
+            <a href="https://wa.me/2348100050716" target="_blank" style="color:#94a3b8;">WhatsApp Us</a>
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-geo-alt-fill me-2" style="color:#60a5fa;"></i>
+            <span style="color:#94a3b8;">6/8 Kodesho Street (Gabriel Olatokun Plaza), Opposite Under Bridge Computer Village, Ikeja, Lagos.</span>
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-instagram me-2" style="color:#60a5fa;"></i>
+            <a href="https://www.instagram.com/iemporiumgadget" target="_blank" style="color:#94a3b8;">@iemporiumgadget</a>
+          </li>
+        </ul>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+          <span class="badge" style="background:#1a3a8a;color:#93c5fd;border:1px solid #2d4a80;">Cash on Delivery</span>
+          <span class="badge" style="background:#1a3a8a;color:#93c5fd;border:1px solid #2d4a80;">Bank Transfer</span>
         </div>
       </div>
     </div>
-    <div class="border-top border-secondary py-3 text-center">
-      <p class="text-muted mb-0 small">© {% now "Y" %} iEmporium Gadgets · All rights reserved · Made in Nigeria</p>
+
+    <div style="border-top:1px solid #1a3a8a;padding:16px 0;text-align:center;">
+      <p style="color:#475569;font-size:13px;margin:0;">© {% now "Y" %} iEmporium Gadgets · All rights reserved · Lagos, Nigeria</p>
     </div>
   </div>
 </footer>

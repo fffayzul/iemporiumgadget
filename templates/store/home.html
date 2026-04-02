@@ -11,13 +11,12 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-6">
-        <div class="hero-badge"><i class="bi bi-lightning-fill me-1"></i>Nigeria's #1 Gadget Store</div>
+        <div class="hero-badge"><i class="bi bi-lightning-fill me-1"></i>Lagos · Ikeja Computer Village</div>
         <h1>
-          The <span class="gold-text">Latest Tech</span><br>
-          Delivered to<br>
-          Your Doorstep
+          Emporium Has Every<br>
+          <span class="gold-text">Gadget You Need.</span>
         </h1>
-        <p class="lead mt-3">Phones, laptops, drones, gaming kits and more. Genuine products. Fast delivery across Nigeria.</p>
+        <p class="lead mt-3">Tech plug activated. Smart gadgets, smart choice. Phones, laptops, drones, gaming kits and more — delivered across Nigeria.</p>
         <div class="mt-4 d-flex gap-3 flex-wrap">
           <a href="{% url 'store:product_list' %}" class="btn btn-gold btn-lg px-4">
             <i class="bi bi-bag-fill me-2"></i>Shop Now
@@ -27,24 +26,25 @@
         <div class="mt-4 d-flex gap-4 flex-wrap">
           <div class="d-flex align-items-center gap-2">
             <i class="bi bi-shield-check text-gold fs-5"></i>
-            <span class="text-muted small">Genuine Products</span>
+            <span style="color:#bfdbfe;" class="small">Genuine Products</span>
           </div>
           <div class="d-flex align-items-center gap-2">
             <i class="bi bi-truck text-gold fs-5"></i>
-            <span class="text-muted small">Fast Delivery</span>
+            <span style="color:#bfdbfe;" class="small">Fast Delivery</span>
           </div>
           <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-headset text-gold fs-5"></i>
-            <span class="text-muted small">Customer Support</span>
+            <i class="bi bi-telephone-fill text-gold fs-5"></i>
+            <a href="tel:+2348100050716" style="color:#bfdbfe;" class="small">+234 810 005 0716</a>
           </div>
         </div>
       </div>
       <div class="col-lg-6 d-none d-lg-flex justify-content-center">
         <div style="position:relative;">
-          <div style="width:420px;height:420px;background:radial-gradient(circle,rgba(240,165,0,0.12) 0%,transparent 70%);display:flex;align-items:center;justify-content:center;">
-            <i class="bi bi-phone" style="font-size:9rem;color:rgba(240,165,0,0.2);"></i>
-            <i class="bi bi-laptop" style="font-size:6rem;color:rgba(240,165,0,0.15);position:absolute;bottom:60px;right:40px;"></i>
-            <i class="bi bi-controller" style="font-size:5rem;color:rgba(240,165,0,0.15);position:absolute;top:70px;right:60px;"></i>
+          <div style="width:420px;height:420px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);display:flex;align-items:center;justify-content:center;">
+            <i class="bi bi-phone" style="font-size:9rem;color:rgba(255,255,255,0.15);"></i>
+            <i class="bi bi-laptop" style="font-size:6rem;color:rgba(255,255,255,0.12);position:absolute;bottom:60px;right:40px;"></i>
+            <i class="bi bi-controller" style="font-size:5rem;color:rgba(255,255,255,0.12);position:absolute;top:70px;right:60px;"></i>
+            <i class="bi bi-headphones" style="font-size:3.5rem;color:rgba(96,165,250,0.3);position:absolute;top:50px;left:50px;"></i>
           </div>
         </div>
       </div>
@@ -175,44 +175,49 @@
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
         <div class="hero-badge">Our Story</div>
-        <h2 class="fw-bold mt-2" style="font-size:2rem;">
-          Nigeria's Go-To<br><span class="text-gold">Gadget Destination</span>
+        <h2 class="fw-bold mt-2" style="font-size:2rem;color:#0b1f4a;">
+          Your Tech Plug<br><span class="text-gold">Activated.</span>
         </h2>
         <p class="text-muted mt-3" style="line-height:1.8;">
-          iEmporium Gadgets was founded with a simple mission: give every Nigerian access to premium electronics at fair prices. From the latest flagship phones to professional-grade drone cameras, we bring you the tech that powers your work and play.
+          iEmporium Gadgets is based at the heart of Ikeja Computer Village, Lagos — Nigeria's biggest tech hub. We stock the latest phones, laptops, drones, accessories and gaming kits at competitive prices.
         </p>
         <p class="text-muted" style="line-height:1.8;">
-          Based in Nigeria, we ship nationwide — because great technology shouldn't be limited by your location.
+          Walk in or order online. We deliver to all 36 states and FCT. Smart gadgets, smart choice.
         </p>
-        <a href="https://www.instagram.com/iemporiumgadget" target="_blank" class="btn btn-outline-gold mt-2">
-          <i class="bi bi-instagram me-2"></i>Follow Us on Instagram
-        </a>
+        <div class="d-flex gap-2 flex-wrap mt-3">
+          <a href="https://www.instagram.com/iemporiumgadget" target="_blank" class="btn btn-outline-gold">
+            <i class="bi bi-instagram me-2"></i>Instagram
+          </a>
+          <a href="https://wa.me/2348100050716" target="_blank" class="btn btn-gold">
+            <i class="bi bi-whatsapp me-2"></i>WhatsApp Us
+          </a>
+        </div>
       </div>
       <div class="col-lg-6">
-        <div class="card-dark p-4 text-center" style="border-radius:16px;">
+        <div class="card-dark p-4 text-center" style="border-radius:16px;background:#eff6ff;border:1px solid #dbeafe;">
           <div class="row g-3">
             <div class="col-6">
-              <div style="background:#12122a;border-radius:10px;padding:20px;">
+              <div style="background:#dbeafe;border-radius:10px;padding:20px;">
                 <div class="text-gold fw-bold" style="font-size:2rem;">6+</div>
                 <div class="text-muted small">Product Categories</div>
               </div>
             </div>
             <div class="col-6">
-              <div style="background:#12122a;border-radius:10px;padding:20px;">
-                <div class="text-gold fw-bold" style="font-size:2rem;">🇳🇬</div>
+              <div style="background:#dbeafe;border-radius:10px;padding:20px;">
+                <div style="font-size:2rem;">🇳🇬</div>
                 <div class="text-muted small">Nigeria-Wide Delivery</div>
               </div>
             </div>
             <div class="col-6">
-              <div style="background:#12122a;border-radius:10px;padding:20px;">
+              <div style="background:#dbeafe;border-radius:10px;padding:20px;">
                 <div class="text-gold fw-bold" style="font-size:2rem;">✓</div>
-                <div class="text-muted small">Verified Genuine Products</div>
+                <div class="text-muted small">Genuine Products</div>
               </div>
             </div>
             <div class="col-6">
-              <div style="background:#12122a;border-radius:10px;padding:20px;">
-                <div class="text-gold fw-bold" style="font-size:2rem;">₦</div>
-                <div class="text-muted small">Naira Pricing, No Surprises</div>
+              <div style="background:#dbeafe;border-radius:10px;padding:20px;">
+                <div class="text-gold fw-bold" style="font-size:1.4rem;">Ikeja CV</div>
+                <div class="text-muted small">Lagos, Nigeria</div>
               </div>
             </div>
           </div>
